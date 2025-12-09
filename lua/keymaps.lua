@@ -43,9 +43,6 @@ vim.keymap.set('n', '<leader>tw', function()
   vim.o.wrap = not vim.o.wrap
 end, { desc = 'Toggle wrap' })
 
-vim.keymap.set('n', '<leader>f', function()
+vim.keymap.set('n', '<leader>e', function()
   require('neo-tree.command').execute { toggle = true, reveal_current_file = true }
 end, { desc = 'Toggle Neo-tree & reveal current file' })
--- vim.keymap.set("n", "<leader>e", function()
---   require("neo-tree.command").execute({ toggle = true })
--- end, { desc = "Toggle Neo-tree" })
