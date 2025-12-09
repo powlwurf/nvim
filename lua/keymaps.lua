@@ -23,3 +23,29 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Toggle Commands
+vim.keymap.set('n', '<leader>tg', function()
+  require('gitsigns').toggle_current_line_blame()
+end, { desc = 'Toggle Gitsigns Blame' })
+
+vim.keymap.set('n', '<leader>tc', function()
+  if vim.o.background == 'dark' then
+    vim.o.background = 'light'
+    vim.cmd.colorscheme 'tokyonight-day'
+  else
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'tokyonight'
+  end
+end, { desc = 'Toggle dark/light theme' })
+
+vim.keymap.set('n', '<leader>tw', function()
+  vim.o.wrap = not vim.o.wrap
+end, { desc = 'Toggle wrap' })
+
+vim.keymap.set('n', '<leader>f', function()
+  require('neo-tree.command').execute { toggle = true, reveal_current_file = true }
+end, { desc = 'Toggle Neo-tree & reveal current file' })
+-- vim.keymap.set("n", "<leader>e", function()
+--   require("neo-tree.command").execute({ toggle = true })
+-- end, { desc = "Toggle Neo-tree" })

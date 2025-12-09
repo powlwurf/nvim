@@ -11,9 +11,6 @@ return {
   },
 
   lazy = false,
-  keys = {
-    { '<leader>e', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
-  },
   opts = {
     default_component_configs = {
       git_status = {
@@ -31,6 +28,7 @@ return {
       },
     },
     filesystem = {
+      follow_current_file = true,
       filtered_items = {
         visible = true,
       },
