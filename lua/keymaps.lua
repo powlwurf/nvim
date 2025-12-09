@@ -7,7 +7,6 @@ vim.keymap.set('v', '$', '<Cmd>normal! g_<CR>', { noremap = true, silent = true 
 
 -- Clear Highlight
 vim.keymap.set('n', '<leader>h', '<cmd>nohlsearch<CR>', { desc = 'Clear Search Highlight' })
--- vim.keymap.set('n', '<leader>q', ':bd<CR>', { desc = 'Close buffer' })
 vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Close buffer' })
 
 -- Diagnostic keymaps
@@ -25,11 +24,11 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Toggle Commands
-vim.keymap.set('n', '<leader>tg', function()
+vim.keymap.set('n', '<leader>xg', function()
   require('gitsigns').toggle_current_line_blame()
 end, { desc = 'Toggle Gitsigns Blame' })
 
-vim.keymap.set('n', '<leader>tc', function()
+vim.keymap.set('n', '<leader>xc', function()
   if vim.o.background == 'dark' then
     vim.o.background = 'light'
     vim.cmd.colorscheme 'tokyonight-day'
@@ -39,10 +38,12 @@ vim.keymap.set('n', '<leader>tc', function()
   end
 end, { desc = 'Toggle dark/light theme' })
 
-vim.keymap.set('n', '<leader>tw', function()
+vim.keymap.set('n', '<leader>xw', function()
   vim.o.wrap = not vim.o.wrap
 end, { desc = 'Toggle wrap' })
 
 vim.keymap.set('n', '<leader>e', function()
   require('neo-tree.command').execute { toggle = true, reveal_current_file = true }
 end, { desc = 'Toggle Neo-tree & reveal current file' })
+
+vim.keymap.set('n', '<leader>t', ':terminal<CR>', { silent = true })
