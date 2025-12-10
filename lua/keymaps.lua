@@ -47,3 +47,6 @@ vim.keymap.set('n', '<leader>e', function()
 end, { desc = 'Toggle Neo-tree & reveal current file' })
 
 vim.keymap.set('n', '<leader>t', ':terminal<CR>', { silent = true })
+
+-- Workaround to copy to clipboard, as the clipboard in options.lua somehow does not work
+vim.keymap.set('x', 'Y', ":'<,'>w !clip.exe<CR>", { silent = true })

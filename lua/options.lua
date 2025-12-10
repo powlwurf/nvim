@@ -10,9 +10,10 @@ vim.o.mouse = 'a'
 vim.o.showmode = false
 
 -- Sync clipboard between OS and Neovim.
-vim.schedule(function()
-  vim.o.clipboard = 'unnamedplus'
-end)
+-- outcommented: as its somehow not working on fedora 43 wsl
+-- vim.schedule(function()
+--   vim.o.clipboard = 'unnamedplus'
+-- end)
 
 -- Use spaces instead of tabs
 vim.o.expandtab = true -- convert tabs to spaces
