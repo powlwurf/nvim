@@ -14,4 +14,5 @@ require('lazy').setup {
   require 'plugins.neo-tree',
   require 'plugins.gitsigns',
   require 'plugins.guess-indent',
+  require 'plugins.markdown',
 }
