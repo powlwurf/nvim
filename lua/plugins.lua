@@ -1,7 +1,7 @@
 require('lazy').setup {
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
 
-  require 'plugins.fuzzyfinder',
+  require 'plugins.telescope',
   require 'plugins.lazydev',
   require 'plugins.lsp',
   require 'plugins.autoformat',
