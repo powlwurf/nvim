@@ -22,35 +22,18 @@ return { -- Fuzzy Finder (files, lsp, etc)
     { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
   },
   config = function()
+    local actions = require 'telescope.actions'
+
     require('telescope').setup {
       defaults = {
         mappings = {
           i = {
-            ['<C-@>'] = function(prompt_bufnr)
-              local picker = action_state.get_current_picker(prompt_bufnr)
-              local seen, files = {}, {}
-
-              for entry in picker.manager:iter() do
-                local f = entry.filename
-                if f and not seen[f] then
-                  seen[f] = true
-                  table.insert(files, f)
-                end
-              end
-
-              actions.close(prompt_bufnr)
-
-              pickers
-                .new({}, {
-                  prompt_title = 'Files with Matches',
-                  finder = finders.new_table(files),
-                  sorter = conf.generic_sorter {},
-                })
-                :find()
-            end,
+            ['<C-f>'] = actions.to_fuzzy_refine, -- toggle file-only mode
+          },
+          n = {
+            ['<C-f>'] = actions.to_fuzzy_refine,
           },
         },
-        -- layout_strategy = 'flex',
         layout_strategy = 'vertical',
         layout_config = {
           horizontal = { preview_width = 0.6 },
@@ -95,21 +78,56 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
     vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep with preview on right' })
 
-    -- -- Override live_grep to always use horizontal layout with preview on the right
-    -- vim.keymap.set('n', '<leader>sg', function()
-    --   builtin.live_grep {
-    --     layout_config = {
-    --       vertical = {
-    --         mirror = true, -- preview above results
-    --         preview_height = 0.4, -- preview takes 40% of window height
-    --       },
-    --       width = 0.9, -- 90% of terminal width
-    --       height = 0.85, -- 85% of terminal height
-    --       preview_cutoff = 20, -- minimal width for preview to show
-    --     },
-    --     sorting_strategy = 'ascending',
-    --   }
-    -- end, { desc = '[S]earch by [G]rep with preview on right' })
+    vim.keymap.set('v', '<leader>s', function()
+      -- Leave visual mode first (VERY important)
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'nx', false)
+
+      -- Now get the finalized visual selection
+      local startPos = vim.fn.getpos "'<"
+      local endPos = vim.fn.getpos "'>"
+
+      local ls, cs = startPos[2], startPos[3]
+      local le, ce = endPos[2], endPos[3]
+
+      local lines = vim.fn.getline(ls, le)
+      if #lines == 0 then
+        return
+      end
+
+      -- Slice selection correctly
+      lines[1] = string.sub(lines[1], cs)
+      lines[#lines] = string.sub(lines[#lines], 1, ce)
+
+      local selected = table.concat(lines, '\n')
+      if selected == '' then
+        return
+      end
+
+      -- Default folder = folder of current file
+      local default_dir = vim.fn.expand '%:p:h' .. '/'
+
+      -- Ask user for folder
+      vim.ui.input({
+        prompt = 'Folder to grep: ',
+        default = default_dir,
+      }, function(folder)
+        if not folder or folder == '' then
+          return
+        end
+
+        require('telescope.builtin').live_grep {
+          cwd = folder,
+          default_text = selected,
+          layout_strategy = 'vertical',
+          layout_config = {
+            vertical = { mirror = true, preview_height = 0.4 },
+            width = 0.9,
+            height = 0.85,
+          },
+          sorting_strategy = 'ascending',
+        }
+      end)
+    end, { desc = 'Live grep visual selection in chosen folder' })
 
     vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
