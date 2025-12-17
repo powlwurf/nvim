@@ -16,4 +16,5 @@ require('lazy').setup {
   require 'plugins.guess-indent',
   require 'plugins.markdown',
   require 'plugins.cmake-tools',
+  require 'plugins.autosave',
 }
