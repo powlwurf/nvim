@@ -84,4 +84,11 @@ vim.o.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 vim.o.confirm = true
 
-vim.opt.shell = '/usr/sbin/fish'
+local fish_paths = { '/usr/bin/fish', '/usr/sbin/fish' }
+
+for _, p in ipairs(fish_paths) do
+  if vim.fn.executable(p) == 1 then
+    vim.opt.shell = p
+    break
+  end
+end
