@@ -12,7 +12,7 @@ vim.o.showmode = false
 -- Sync clipboard between OS and Neovim.
 -- outcommented: as its somehow not working on fedora 43 wsl
 -- vim.schedule(function()
---   vim.o.clipboard = 'unnamedplus'
+vim.o.clipboard = 'unnamedplus'
 -- end)
 
 -- Use spaces instead of tabs

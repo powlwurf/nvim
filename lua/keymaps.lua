@@ -49,5 +49,15 @@ end, { desc = 'Toggle Neo-tree & reveal current file' })
 vim.keymap.set('n', '<leader>t', ':terminal<CR>', { silent = true })
 
 -- Workaround to copy to clipboard, as the clipboard in options.lua somehow does not work
-vim.keymap.set('x', 'Y', ":'<,'>w !clip.exe<CR>", { silent = true })
+-- vim.keymap.set('x', 'Y', ":'<,'>w !clip.exe<CR>", { silent = true })
 
+vim.keymap.set('n', '<leader>cw', function()
+  local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+  local diags = vim.diagnostic.get(0, { lnum = lnum })
+  if diags and diags[1] then
+    vim.fn.setreg('+', diags[1].message)
+    print('Copied: ' .. diags[1].message)
+  else
+    print 'No diagnostic on this line'
+  end
+end, { desc = 'Copy diagnostic message' })
